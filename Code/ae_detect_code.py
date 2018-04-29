@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Apr 27 09:30:14 2018
+Created on Fri Mar 05 09:30:14 2018
 
 @author: will7142 (Will Rosenfeld)
+
+Purpose: To identify the existance of adverse effects in doctors notes.
 """
 
-#IMPORTS
+# imports
 import pandas as pd
 import numpy as np
 import scipy as sp
@@ -33,8 +35,6 @@ ne = ne.drop(labels=['pre'], axis = 1)
 ne['ae'] = 0
 
 # combine DataFrames
-ae.shape
-ne.shape
 df = ae.append(ne, ignore_index=False, verify_integrity=False)
 df.shape
 
@@ -42,5 +42,38 @@ df.shape
 X = df.text
 y = df.ae
 
-# split the new DataFrame into training and testing sets
+# split into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+# tokenization
+vect = CountVectorizer(ngram_range=(1, 2))
+
+# create document term matrix
+X_train_dtm = vect.fit_transform(X_train)
+X_test_dtm = vect.transform(X_test)
+
+# use Naive Bayes to predict existance of adverse effect
+nb = MultinomialNB()
+nb.fit(X_train_dtm, y_train)
+y_pred_class = nb.predict(X_test_dtm)
+
+# evaluate model
+print(metrics.accuracy_score(y_test, y_pred_class)) #accuracy
+
+# null accuracy
+y_test_binary = np.where(y_test==1, 1, 0)
+print(y_test_binary.mean())
+print(1 - y_test_binary.mean())
+
+
+
+
+
+
+
+
+
+
+
+
+
