@@ -14,7 +14,7 @@ API Key: nf2NArROcmgqc4N3OZPHSiZYKVTSIDWhygRuNXT7
 
 # imports
 import requests
-from urllib import requests, urlopen
+# from urllib import urlopen #Import Error
 import pandas as pd
 import json
 from pandas.io.json import json_normalize
