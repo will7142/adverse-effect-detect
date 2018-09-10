@@ -38,3 +38,13 @@ rslt
 # convert to DataFrame
 df = pd.io.json.json_normalize(rslt)
 df
+
+# pull a specific record
+data = requests.get('https://api.fda.gov/drug/event.json?search=receivedate:[20040101+TO+20081231]&limit=1')
+data.json()
+rslt = data.json()['results']
+rslt
+
+
+
+
